@@ -38,7 +38,8 @@ applications</p>
 <dl class="py function">
 <dt id="cleanX.augment_and_move">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">augment_and_move</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.augment_and_move" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes images, and applies the same list of augmentations to all of them</p>
+<dd><p>Takes images and applies the same list of augmentations, which can include
+the cleanX function crop, to all of them</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -104,8 +105,8 @@ element. Super handy for advanced image manipulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>width</strong> (<em>integer</em>) – Width of matrix to be created</p></li>
-<li><p><strong>height</strong> (<em>integer</em>) – Height of matrix to be created</p></li>
+<li><p><strong>width</strong> (<em>integer</em>) – Width of the matrix to be created</p></li>
+<li><p><strong>height</strong> (<em>integer</em>) – The height of matrix to be created</p></li>
 <li><p><strong>default_element</strong> (<em>float</em><em> or </em><em>integer</em><em> or </em><em>string</em>) – Element to populate the matrix with</p></li>
 </ul>
 </dd>
@@ -224,7 +225,7 @@ data analysis</p>
 <dd class="field-odd"><p><strong>folder_name</strong> (<em>Folder/directory</em>) – Adress of folder with images.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>image height, width and proportion heigth/width as a new dataframe</p>
+<dd class="field-even"><p>image height, width and proportion height/width as a new dataframe</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>DataFrame</p>
@@ -235,9 +236,9 @@ data analysis</p>
 <dl class="py function">
 <dt id="cleanX.dimensions_to_histo">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">dimensions_to_histo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.dimensions_to_histo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Looks in the directory given, and produces a histogram of variosu widths
-and heights.Important information as many neural nets take images all the
-same size. Clasically most chestXrays are 2500*2000 or 2500 <a href="#id1"><span class="problematic" id="id2">*</span></a>2048;
+<dd><p>Looks in the directory given, and produces a histogram of various widths
+and heights. Important information as many neural nets take images all the
+same size. Classically most chest-X-rays are 2500*2000 or 2500 <a href="#id1"><span class="problematic" id="id2">*</span></a>2048;
 however the dataset may be different and/or varied</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -259,8 +260,8 @@ however the dataset may be different and/or varied</p>
 <dt id="cleanX.find_by_sample_upper">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">find_by_sample_upper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent_height_of_sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_for_line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.find_by_sample_upper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes average of upper pixels, and can show you outliers defined by a
-percentage e.g. shows images with averge of top pixels in top x % where
-x is the percent height of the sample.</p>
+percentage, e.g. shows images with an average of top pixels in top x %
+where x is the percent height of the sample.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -338,9 +339,9 @@ the same mean are in and out of normal range if the knife so falls</p>
 <dl class="py function">
 <dt id="cleanX.find_outliers_by_total_mean">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">find_outliers_by_total_mean</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentage_to_say_outliers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.find_outliers_by_total_mean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes the average of all pixels in image, returns a dataframe with
+<dd><p>Takes the average of all pixels in an image, returns a dataframe with
 those images that are outliers by mean…should catch some inverted or
-or problem images</p>
+problem images</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -433,6 +434,44 @@ is approximate, may be a tad more</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="cleanX.find_very_hazy">
+<code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">find_very_hazy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.find_very_hazy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds pictures that are really “hazy” i.e. there is no real straight line
+because they are blurred. Usually, at least the left or right tag
+should give straight lines, thus this function finds image of a certain
+questionable technique level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> (<em>directory</em>) – The folder where the images are</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dataframe with imgs sorted as hazy or regular under label_for_haze</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="cleanX.harsh_sharpie_enhance">
+<code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">harsh_sharpie_enhance</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.harsh_sharpie_enhance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a new image that is very sharper to the human eye,
+and has new values in most of the pixels(besides the background)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>string</em>) – String for image name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new_image_array, a sharpened image for humans</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>nd.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="cleanX.histogram_difference_for_inverts">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">histogram_difference_for_inverts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.histogram_difference_for_inverts" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function looks for images by a spike on the end of thier pixel
@@ -496,6 +535,51 @@ however the dataset may be different and/or varied</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="cleanX.reasonable_rotation_augmentation">
+<code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">reasonable_rotation_augmentation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_slices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.reasonable_rotation_augmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Works on a single image, and returns a list of augmented images which are
+based on twisting the angle from angle1 to angle2 with ‘number_slices’ as
+the number of augmented images to be made from the original. It is not
+realistic or desirable to augment images of most Xrays by flipping them. In
+abdominal or chest X-rays that would create an augmentation that could
+imply specific pathologies e.g. situs inversus. We suggest augmenting
+between angles -5 to 5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angle1</strong> (<em>float</em>) – angle1 is the angle from the original to the first augmented</p></li>
+<li><p><strong>angle2</strong> (<em>float</em>) – angle2 is the angle from the original to the last augmented</p></li>
+<li><p><strong>number_slices</strong> (<em>int</em>) – number of images to be produced</p></li>
+<li><p><strong>image</strong> (<em>Image</em><em> (</em><em>JPEG</em><em>)</em>) – Image</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of PIL images</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="cleanX.salting">
+<code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">salting</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.salting" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds some noise to an image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_name</strong> (<em>string</em>) – String for image name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new_image_array, with noise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>nd.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="cleanX.see_part_potential_bias">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">see_part_potential_bias</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensitive_column_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.see_part_potential_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function gives you a tabulated dataframe of sensitive columns e.g.
@@ -530,7 +614,7 @@ there were fewer Xrays of women in the datasets they built on did not help</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>set_of_images</strong> – Set_of_images</p></li>
-<li><p><strong>s</strong> (<em>integer</em>) – legnth of sides in image made</p></li>
+<li><p><strong>s</strong> (<em>integer</em>) – length of sides in the image made</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -552,7 +636,7 @@ duplicated rows</p>
 <dl class="py function">
 <dt id="cleanX.show_images_in_df">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">show_images_in_df</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iter_ob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legnth_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.show_images_in_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shows images by taking them off a dataframe column, and puths them up
+<dd><p>Shows images by taking them off a dataframe column, and puts them up
 but smaller, so they can be compared quickly</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -562,10 +646,36 @@ but smaller, so they can be compared quickly</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>techically no return but makes a plot of images with names</p>
+<dd class="field-even"><p>technically no return but makes a plot of images with names</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="cleanX.simple_rotation_augmentation">
+<code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">simple_rotation_augmentation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle_list1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.simple_rotation_augmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes one picture and rotates is by a number
+of degress is angle_list1.This function can be used with the
+augment_and_move function as follows (example):
+augment_and_move(</p>
+<blockquote>
+<div><p>‘D:/my_academia/dataset/random_within_domain’,
+‘D:/my_academia/elo’,
+[partial(simple_rotation_augmentation,5)],</p>
+</div></blockquote>
+<p>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>Image</em><em> (</em><em>JPEG</em><em>)</em>) – Image.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>rotated image</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PIL image</p>
 </dd>
 </dl>
 </dd></dl>
@@ -591,6 +701,24 @@ np.min(x_nonzero):np.max(x_nonzero))</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="cleanX.subtle_sharpie_enhance">
+<code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">subtle_sharpie_enhance</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.subtle_sharpie_enhance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a new image that is very subtly sharper to the human eye,
+but has new values in most of the pixels(besides the background)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>string</em>) – String for image name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new_image_array, a nearly imperceptibly sharpened image for humans</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>nd.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="cleanX.tesseract_specific">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">tesseract_specific</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.tesseract_specific" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds images with text on them. Multi-lingual including English.</p>
@@ -611,7 +739,7 @@ np.min(x_nonzero):np.max(x_nonzero))</p>
 <dt id="cleanX.understand_df">
 <code class="sig-prename descclassname"><span class="pre">cleanX.</span></code><code class="sig-name descname"><span class="pre">understand_df</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cleanX.understand_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a dataframe (if you have a dataframe for images) and prints
-information including legnth, data types, nulls and number of
+information including length, data types, nulls and number of
 duplicated rows</p>
 </dd></dl>
 
