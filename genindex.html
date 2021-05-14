@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; cleanX 0.0.4 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -40,6 +40,7 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
@@ -108,6 +109,8 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cleanX.html#cleanX.find_big_lines">find_big_lines() (in module cleanX)</a>
+</li>
       <li><a href="cleanX.html#cleanX.find_by_sample_upper">find_by_sample_upper() (in module cleanX)</a>
 </li>
       <li><a href="cleanX.html#cleanX.find_duplicated_images">find_duplicated_images() (in module cleanX)</a>
@@ -116,15 +119,15 @@
 </li>
       <li><a href="cleanX.html#cleanX.find_outliers_by_mean_to_df">find_outliers_by_mean_to_df() (in module cleanX)</a>
 </li>
-      <li><a href="cleanX.html#cleanX.find_outliers_by_total_mean">find_outliers_by_total_mean() (in module cleanX)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cleanX.html#cleanX.find_outliers_by_total_mean">find_outliers_by_total_mean() (in module cleanX)</a>
+</li>
       <li><a href="cleanX.html#cleanX.find_sample_upper_greater_than_lower">find_sample_upper_greater_than_lower() (in module cleanX)</a>
 </li>
       <li><a href="cleanX.html#cleanX.find_suspect_text">find_suspect_text() (in module cleanX)</a>
 </li>
-      <li><a href="cleanX.html#cleanX.find_suspect_text_by_legnth">find_suspect_text_by_legnth() (in module cleanX)</a>
+      <li><a href="cleanX.html#cleanX.find_suspect_text_by_length">find_suspect_text_by_length() (in module cleanX)</a>
 </li>
       <li><a href="cleanX.html#cleanX.find_tiny_image_differences">find_tiny_image_differences() (in module cleanX)</a>
 </li>
@@ -147,8 +150,20 @@
   </ul></td>
 </tr></table>
 
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cleanX.html#cleanX.Rotator.iter">iter() (cleanX.Rotator method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cleanX.html#cleanX.make_contour_image">make_contour_image() (in module cleanX)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     module
@@ -174,6 +189,12 @@
       <li><a href="cleanX.html#cleanX.reasonable_rotation_augmentation">reasonable_rotation_augmentation() (in module cleanX)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cleanX.html#cleanX.Rotator">Rotator (class in cleanX)</a>
+</li>
+      <li><a href="cleanX.html#cleanX.Rotator.RotationIterator">Rotator.RotationIterator (class in cleanX)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
@@ -183,17 +204,19 @@
 </li>
       <li><a href="cleanX.html#cleanX.see_part_potential_bias">see_part_potential_bias() (in module cleanX)</a>
 </li>
-      <li><a href="cleanX.html#cleanX.seperate_image_averger">seperate_image_averger() (in module cleanX)</a>
+      <li><a href="cleanX.html#cleanX.separate_image_averager">separate_image_averager() (in module cleanX)</a>
 </li>
       <li><a href="cleanX.html#cleanX.show_duplicates">show_duplicates() (in module cleanX)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="cleanX.html#cleanX.show_images_in_df">show_images_in_df() (in module cleanX)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="cleanX.html#cleanX.show_major_lines_on_image">show_major_lines_on_image() (in module cleanX)</a>
 </li>
       <li><a href="cleanX.html#cleanX.simple_rotation_augmentation">simple_rotation_augmentation() (in module cleanX)</a>
+</li>
+      <li><a href="cleanX.html#cleanX.simple_spinning_template">simple_spinning_template() (in module cleanX)</a>
 </li>
       <li><a href="cleanX.html#cleanX.simpler_crop">simpler_crop() (in module cleanX)</a>
 </li>
@@ -274,7 +297,7 @@
       &copy;2021, doctormakeda@gmail.com.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
