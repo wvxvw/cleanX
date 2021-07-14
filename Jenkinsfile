@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('BuildAndTest') {
             matrix {
-                agent any
+                agent {
+                    label "kubeagent"
+                }
                 axes {
                     axis {
                         name 'PYTHON_VERSION'
