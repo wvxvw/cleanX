@@ -23,6 +23,10 @@ def libraries = [
 
 pipeline {
     agent none
+    options {
+        timestamps()
+        timeout(time: 1, unit: 'HOURS')
+    }
     stages {
         stage('BuildAndTest') {
             matrix {
