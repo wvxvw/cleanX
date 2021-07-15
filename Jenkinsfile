@@ -14,6 +14,8 @@
 //     }
 // }
 
+org.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS = true
+
 def libraries = [
     'libleptonica-dev',
     'tesseract-ocr-all',
