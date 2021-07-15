@@ -46,7 +46,7 @@ pipeline {
 
                 stages {
 
-                    stage('Build on ${PYTHON_DISTRIBUTION}/${PYTHON_VERSION}') {
+                    stage("Build on ${PYTHON_DISTRIBUTION}/${PYTHON_VERSION}") {
                         steps {
                             podTemplate(containers: [
                                 containerTemplate(
