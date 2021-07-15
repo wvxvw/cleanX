@@ -40,7 +40,7 @@ pipeline {
                     }
                     axis {
                         name 'PYTHON_DISTRIBUTION'
-                        values 'python:', 'continuumio/conda-ci-linux-64-python'
+                        values 'python', 'continuumio/conda-ci-linux-64-python'
                     }
                 }
 
@@ -55,7 +55,7 @@ pipeline {
                             podTemplate(containers: [
                                 containerTemplate(
                                     name: 'python',
-                                    image: "${PYTHON_DISTRIBUTION}${PYTHON_VERSION}",
+                                    image: "${PYTHON_DISTRIBUTION}:${PYTHON_VERSION}",
                                     command: 'sleep',
                                     args: '99d'
                                 )
@@ -82,15 +82,19 @@ pipeline {
                             }
                         }
                         steps {
-                            podTemplate(containers: [
-                                containerTemplate(
-                                    name: 'python',
-                                    image: "${PYTHON_DISTRIBUTION}${PYTHON_VERSION}",
-                                    entrypoint: ["/bin/bash", "-lc"],
-                                    command: 'sleep',
-                                    args: '99d'
-                                )
-                            ]) {
+                            podTemplate(yaml: """
+    apiVersion: v1
+    kind: Pod
+    spec:
+      containers:
+      - name: python
+        image: ${PYTHON_DISTRIBUTION}${PYTHON_VERSION}
+        command:
+        - /bin/bash
+        args:
+        - "-c"
+        - "sleep 99d"
+""") {
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
                                     container('python') {
