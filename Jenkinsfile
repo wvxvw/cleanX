@@ -90,6 +90,9 @@ kind: Pod
 metadata:
   name: conda-${PYTHON_VERSION}
 spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
   containers:
   - name: python
     image: ${PYTHON_DISTRIBUTION}${PYTHON_VERSION}
