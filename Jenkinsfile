@@ -45,7 +45,7 @@ pipeline {
                 }
 
                 stages {
-                    stage("Build on ${PYTHON_DISTRIBUTION}/${PYTHON_VERSION}") {
+                    stage("Build on pypi ${PYTHON_VERSION}") {
                         when {
                             expression {
                                 return "${PYTHON_DISTRIBUTION}" == 'python'
@@ -74,7 +74,7 @@ pipeline {
                         }
                     }
 
-                    stage("Build on ${PYTHON_DISTRIBUTION}/${PYTHON_VERSION}") {
+                    stage("Build on conda ${PYTHON_VERSION}") {
                         when {
                             expression {
                                 return "${PYTHON_DISTRIBUTION}" ==
