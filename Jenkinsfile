@@ -50,8 +50,9 @@ pipeline {
                         steps {
                             podTemplate(containers: [
                                 containerTemplate(
-                                    name: "python",
+                                    name: 'python',
                                     image: "${PYTHON_DISTRIBUTION}${PYTHON_VERSION}",
+                                    entrypoint: ["/bin/bash", "-lc"],
                                     command: 'sleep',
                                     args: '99d'
                                 )
