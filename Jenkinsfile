@@ -98,6 +98,7 @@ spec:
     args:
     - "-c"
     - "sleep 99d"
+    workingDir: /home/jenkins/agent
 """) {
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
