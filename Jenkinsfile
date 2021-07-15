@@ -60,11 +60,15 @@ pipeline {
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
                                     container('python') {
-                                        sh 'apt-get update -y'
-                                        sh "apt-get install -y ${libraries}"
-                                        sh "python${PYTHON_VERSION} -m venv .venv"
-                                        sh './.venv/bin/python -m pip install wheel'
-                                        sh './.venv/bin/python ./setup.py install'
+                                        if ("${PYTHON_DISTRIBUTION}" == 'python') {
+                                            sh 'apt-get update -y'
+                                            sh "apt-get install -y ${libraries}"
+                                            sh "python${PYTHON_VERSION} -m venv .venv"
+                                            sh './.venv/bin/python -m pip install wheel'
+                                            sh './.venv/bin/python ./setup.py install'
+                                        } else {
+                                            sh "echo THIS IS CONDA"
+                                        }
                                     }
                                 }
                             }
