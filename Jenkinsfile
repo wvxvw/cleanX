@@ -83,17 +83,19 @@ pipeline {
                         }
                         steps {
                             podTemplate(yaml: """
-    apiVersion: v1
-    kind: Pod
-    spec:
-      containers:
-      - name: python
-        image: ${PYTHON_DISTRIBUTION}${PYTHON_VERSION}
-        command:
-        - /bin/bash
-        args:
-        - "-c"
-        - "sleep 99d"
+apiVersion: v1
+kind: Pod
+metadata:
+  name: conda-${PYTHON_VERSION}
+spec:
+  containers:
+  - name: python
+    image: ${PYTHON_DISTRIBUTION}${PYTHON_VERSION}
+    command:
+    - /bin/bash
+    args:
+    - "-c"
+    - "sleep 99d"
 """) {
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
