@@ -45,8 +45,42 @@ pipeline {
                 }
 
                 stages {
+                    stage("Build on ${PYTHON_DISTRIBUTION}/${PYTHON_VERSION}") {
+                        when {
+                            expression {
+                                return "${PYTHON_DISTRIBUTION}" == 'python'
+                            }
+                        }
+                        steps {
+                            podTemplate(containers: [
+                                containerTemplate(
+                                    name: 'python',
+                                    image: "${PYTHON_DISTRIBUTION}${PYTHON_VERSION}",
+                                    command: 'sleep',
+                                    args: '99d'
+                                )
+                            ]) {
+                                node(POD_LABEL) {
+                                    git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
+                                    container('python') {
+                                        sh 'apt-get update -y'
+                                        sh "apt-get install -y ${libraries}"
+                                        sh "python${PYTHON_VERSION} -m venv .venv"
+                                        sh './.venv/bin/python -m pip install wheel'
+                                        sh './.venv/bin/python ./setup.py install'
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     stage("Build on ${PYTHON_DISTRIBUTION}/${PYTHON_VERSION}") {
+                        when {
+                            expression {
+                                return "${PYTHON_DISTRIBUTION}" ==
+                                    'continuumio/conda-ci-linux-64-python'
+                            }
+                        }
                         steps {
                             podTemplate(containers: [
                                 containerTemplate(
@@ -60,15 +94,7 @@ pipeline {
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
                                     container('python') {
-                                        if ("${PYTHON_DISTRIBUTION}" == 'python') {
-                                            sh 'apt-get update -y'
-                                            sh "apt-get install -y ${libraries}"
-                                            sh "python${PYTHON_VERSION} -m venv .venv"
-                                            sh './.venv/bin/python -m pip install wheel'
-                                            sh './.venv/bin/python ./setup.py install'
-                                        } else {
-                                            sh "echo THIS IS CONDA"
-                                        }
+                                        sh 'echo THIS IS CONDA'
                                     }
                                 }
                             }
