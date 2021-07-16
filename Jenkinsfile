@@ -57,12 +57,14 @@ pipeline {
                                         sh './.venv/bin/python ./setup.py bdist_egg'
                                         sh './.venv/bin/python ./setup.py bdist_wheel'
                                         sh 'ls ./dist/'
+                                        sh "ls ${WORKSPACE}"
                                         sh 'pwd'
                                         sh 'env'
-                                        dir("$WORKSPACE") {
-                                            stash includes: './dist/*.*',
-                                                name: "dist-pypi-${PYTHON_VERSION}"
-                                        }
+                                        sh "mkdir -p ${WORKSPACE}/dist/"
+                                        sh "cp ./dist/* ${WORKSPACE}/dist/"
+                                        sh "ls ${WORKSPACE}"
+                                        stash includes: './dist/*.*',
+                                            name: "dist-pypi-${PYTHON_VERSION}"
                                     }
                                 }
                             }
