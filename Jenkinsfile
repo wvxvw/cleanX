@@ -108,6 +108,12 @@ spec:
                                     container('python') {
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
+                                        sh 'which python'
+                                        sh 'python -m venv .venv'
+                                        sh '.venv/bin/python setup.py bdist_egg'
+                                        sh '.venv/bin/python setup.py genconda'
+                                        sh 'conda install conda-build'
+                                        sh 'conda build -c conda-forge ./conda-pkg/'
                                     }
                                 }
                             }
