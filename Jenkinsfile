@@ -106,8 +106,8 @@ spec:
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
                                     container('python') {
-                                        sh 'apt-get update -y'
-                                        sh "apt-get install -y ${libraries}"
+                                        sh 'sudo apt-get update -y'
+                                        sh "sudo apt-get install -y ${libraries}"
                                     }
                                 }
                             }
