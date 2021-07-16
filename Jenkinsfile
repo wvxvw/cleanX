@@ -41,7 +41,7 @@ pipeline {
                             podTemplate(containers: [
                                 containerTemplate(
                                     name: 'python',
-                                    image: "pypi:${PYTHON_VERSION}",
+                                    image: "python:${PYTHON_VERSION}",
                                     command: 'sleep',
                                     args: '99d'
                                 )
@@ -57,7 +57,7 @@ pipeline {
                                         sh './.venv/bin/python ./setup.py bdist_egg'
                                         sh './.venv/bin/python ./setup.py bdist_wheel'
                                         stash includes: './dist/*',
-                                            name: "dist-pypi:${PYTHON_VERSION}"
+                                            name: "dist-pypi-${PYTHON_VERSION}"
                                     }
                                 }
                             }
@@ -101,7 +101,7 @@ spec:
                                         sh 'conda install conda-build'
                                         sh 'conda build -c conda-forge --output-folder ./dist ./conda-pkg/'
                                         stash includes: './dist/*',
-                                            name: "dist-conda:${PYTHON_VERSION}"
+                                            name: "dist-conda-${PYTHON_VERSION}"
                                     }
                                 }
                             }
@@ -130,7 +130,7 @@ spec:
                                         sh "apt-get install -y ${libraries}"
                                         sh "python${PYTHON_VERSION} -m venv .venv"
                                         sh './.venv/bin/python -m pip install wheel'
-                                        unstash "dist-pypi:${PYTHON_VERSION}"
+                                        unstash "dist-pypi-${PYTHON_VERSION}"
                                         sh './.venv/bin/python ./setup.py lint'
                                         sh './.venv/bin/python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
                                     }
