@@ -59,8 +59,10 @@ pipeline {
                                         sh 'ls ./dist/'
                                         sh 'pwd'
                                         sh 'env'
-                                        stash includes: './dist/*.*',
-                                            name: "dist-pypi-${PYTHON_VERSION}"
+                                        dir("$WORKSPACE") {
+                                            stash includes: './dist/*.*',
+                                                name: "dist-pypi-${PYTHON_VERSION}"
+                                        }
                                     }
                                 }
                             }
