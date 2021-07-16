@@ -56,6 +56,7 @@ pipeline {
                                         sh './.venv/bin/python ./setup.py install'
                                         sh './.venv/bin/python ./setup.py bdist_egg'
                                         sh './.venv/bin/python ./setup.py bdist_wheel'
+                                        sh 'ls ./dist/'
                                         stash includes: './dist/*.*',
                                             name: "dist-pypi-${PYTHON_VERSION}"
                                     }
