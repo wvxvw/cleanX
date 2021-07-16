@@ -60,11 +60,9 @@ pipeline {
                                         sh "ls ${WORKSPACE}"
                                         sh 'pwd'
                                         sh 'env'
-                                        sh "mkdir -p ${WORKSPACE}/dist/"
-                                        sh "cp ./dist/* ${WORKSPACE}/dist/"
-                                        sh "ls ${WORKSPACE}"
-                                        stash includes: './dist/*.*',
-                                            name: "dist-pypi-${PYTHON_VERSION}"
+                                        dir('dist') {
+                                            stash name: "dist-pypi-${PYTHON_VERSION}"
+                                        }
                                     }
                                 }
                             }
@@ -107,8 +105,9 @@ spec:
                                         sh '.venv/bin/python setup.py genconda'
                                         sh 'conda install conda-build'
                                         sh 'conda build -c conda-forge --output-folder ./dist ./conda-pkg/'
-                                        stash includes: './dist/*.*',
-                                            name: "dist-conda-${PYTHON_VERSION}"
+                                        dir('./dist/') {
+                                            stash name: "dist-conda-${PYTHON_VERSION}"
+                                        }
                                     }
                                 }
                             }
