@@ -91,8 +91,8 @@ metadata:
   name: conda-${PYTHON_VERSION}
 spec:
   securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
+    runAsUser: 0
+    runAsGroup: 0
   containers:
   - name: python
     image: ${PYTHON_DISTRIBUTION}${PYTHON_VERSION}
@@ -106,8 +106,8 @@ spec:
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
                                     container('python') {
-                                        sh 'sudo apt-get update -y'
-                                        sh "sudo apt-get install -y ${libraries}"
+                                        sh 'apt-get update -y'
+                                        sh "apt-get install -y ${libraries}"
                                     }
                                 }
                             }
