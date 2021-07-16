@@ -27,6 +27,9 @@ from setuptools.command.egg_info import write_requirements
 from setuptools import Command
 from pkg_resources import parse_version
 
+# Must import this after setuptools or it starts complaining...
+from distutils.dir_util import copy_tree
+
 
 project_dir = os.path.dirname(os.path.realpath(__file__))
 # This will exclude the project directory from sys.path so that Sphinx

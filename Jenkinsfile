@@ -56,7 +56,7 @@ pipeline {
                                         sh './.venv/bin/python ./setup.py install'
                                         sh './.venv/bin/python ./setup.py bdist_egg'
                                         sh './.venv/bin/python ./setup.py bdist_wheel'
-                                        stash includes: './dist/*',
+                                        stash includes: './dist/*.*',
                                             name: "dist-pypi-${PYTHON_VERSION}"
                                     }
                                 }
@@ -100,7 +100,7 @@ spec:
                                         sh '.venv/bin/python setup.py genconda'
                                         sh 'conda install conda-build'
                                         sh 'conda build -c conda-forge --output-folder ./dist ./conda-pkg/'
-                                        stash includes: './dist/*',
+                                        stash includes: './dist/*.*',
                                             name: "dist-conda-${PYTHON_VERSION}"
                                     }
                                 }
