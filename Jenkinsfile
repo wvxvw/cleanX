@@ -106,7 +106,8 @@ spec:
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
                                     container('python') {
-                                        sh 'echo THIS IS CONDA'
+                                        sh 'apt-get update -y'
+                                        sh "apt-get install -y ${libraries}"
                                     }
                                 }
                             }
