@@ -1,19 +1,3 @@
-// pipeline {
-//     agent {
-//         kubernetes {
-//             label 'kubeagent'
-//             containerTemplate {
-//                 name 'dind-jdk8-maven3'
-//                 image 'eu.gcr.io/jenkins-demo/dind-jdk8-maven3:v4'
-//                 ttyEnabled true
-//                 command 'cat'
-//             }
-//         }
-//     }
-//     stages {
-//     }
-// }
-
 org.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS = true
 
 def libraries = [
@@ -42,7 +26,7 @@ pipeline {
                     }
                     axis {
                         name 'PYTHON_DISTRIBUTION'
-                        values 'python', 'continuumio/conda-ci-linux-64-python'
+                        values 'pypi', 'anaconda'
                     }
                 }
 
@@ -50,14 +34,14 @@ pipeline {
                     stage('Build on pypi') {
                         when {
                             expression {
-                                return "${PYTHON_DISTRIBUTION}" == 'python'
+                                return "${PYTHON_DISTRIBUTION}" == 'pypi'
                             }
                         }
                         steps {
                             podTemplate(containers: [
                                 containerTemplate(
                                     name: 'python',
-                                    image: "${PYTHON_DISTRIBUTION}:${PYTHON_VERSION}",
+                                    image: "pypi:${PYTHON_VERSION}",
                                     command: 'sleep',
                                     args: '99d'
                                 )
@@ -70,6 +54,10 @@ pipeline {
                                         sh "python${PYTHON_VERSION} -m venv .venv"
                                         sh './.venv/bin/python -m pip install wheel'
                                         sh './.venv/bin/python ./setup.py install'
+                                        sh './.venv/bin/python ./setup.py bdist_egg'
+                                        sh './.venv/bin/python ./setup.py bdist_wheel'
+                                        stash includes: './dist/*',
+                                            name: "dist-pypi:${PYTHON_VERSION}"
                                     }
                                 }
                             }
@@ -79,8 +67,7 @@ pipeline {
                     stage('Build on conda') {
                         when {
                             expression {
-                                return "${PYTHON_DISTRIBUTION}" ==
-                                    'continuumio/conda-ci-linux-64-python'
+                                return "${PYTHON_DISTRIBUTION}" == 'anaconda'
                             }
                         }
                         steps {
@@ -95,7 +82,7 @@ spec:
     runAsGroup: 0
   containers:
   - name: python
-    image: ${PYTHON_DISTRIBUTION}${PYTHON_VERSION}
+    image: continuumio/conda-ci-linux-64-python${PYTHON_VERSION}
     command:
     - /bin/bash
     args:
@@ -110,19 +97,45 @@ spec:
                                         sh "apt-get install -y ${libraries}"
                                         sh 'which python'
                                         sh 'python -m venv .venv'
-                                        sh '.venv/bin/python setup.py bdist_egg'
                                         sh '.venv/bin/python setup.py genconda'
                                         sh 'conda install conda-build'
-                                        sh 'conda build -c conda-forge ./conda-pkg/'
+                                        sh 'conda build -c conda-forge --output-folder ./dist ./conda-pkg/'
+                                        stash includes: './dist/*',
+                                            name: "dist-conda:${PYTHON_VERSION}"
                                     }
                                 }
                             }
                         }
                     }
 
-                    stage('Test') {
+                    stage('Test on pypi') {
+                        when {
+                            expression {
+                                return "${PYTHON_DISTRIBUTION}" == 'pypi'
+                            }
+                        }
                         steps {
-                            echo "Do Test for ${PYTHON_VERSION} - ${PYTHON_DISTRIBUTION}"
+                            podTemplate(containers: [
+                                containerTemplate(
+                                    name: 'python',
+                                    image: "python:${PYTHON_VERSION}",
+                                    command: 'sleep',
+                                    args: '99d'
+                                )
+                            ]) {
+                                node(POD_LABEL) {
+                                    git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
+                                    container('python') {
+                                        sh 'apt-get update -y'
+                                        sh "apt-get install -y ${libraries}"
+                                        sh "python${PYTHON_VERSION} -m venv .venv"
+                                        sh './.venv/bin/python -m pip install wheel'
+                                        unstash "dist-pypi:${PYTHON_VERSION}"
+                                        sh './.venv/bin/python ./setup.py lint'
+                                        sh './.venv/bin/python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
+                                    }
+                                }
+                            }
                         }
                     }
                 }
