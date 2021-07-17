@@ -125,6 +125,7 @@ spec:
                         steps {
                             podTemplate(
                                 podRetention: onFailure(),
+                                activeDeadlineSeconds: 3600,
                                 containers: [
                                 containerTemplate(
                                     name: 'python',
