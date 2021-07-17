@@ -47,7 +47,8 @@ pipeline {
                                 )
                             ]) {
                                 node(POD_LABEL) {
-                                    git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
+                                    git url: 'https://github.com/wvxvw/cleanX.git',
+                                        branch: "${GIT_BRANCH}"
                                     container('python') {
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
@@ -56,10 +57,8 @@ pipeline {
                                         sh './.venv/bin/python ./setup.py install'
                                         sh './.venv/bin/python ./setup.py bdist_egg'
                                         sh './.venv/bin/python ./setup.py bdist_wheel'
-                                        sh 'ls ./dist/'
-                                        sh "ls ${WORKSPACE}"
-                                        sh 'pwd'
-                                        sh 'env'
+                                        stash name: "setup-pypi-${PYTHON_VERSION}",
+                                            includes: "setup.py"
                                         dir('dist') {
                                             stash name: "dist-pypi-${PYTHON_VERSION}"
                                         }
@@ -96,15 +95,17 @@ spec:
     workingDir: /home/jenkins/agent
 """) {
                                 node(POD_LABEL) {
-                                    git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
+                                    git url: 'https://github.com/wvxvw/cleanX.git',
+                                        branch: "${GIT_BRANCH}"
                                     container('python') {
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
-                                        sh 'which python'
                                         sh 'python -m venv .venv'
                                         sh '.venv/bin/python setup.py genconda'
                                         sh 'conda install conda-build'
                                         sh 'conda build -c conda-forge --output-folder ./dist ./conda-pkg/'
+                                        stash name: "setup-conda-${PYTHON_VERSION}",
+                                            includes: "setup.py"
                                         dir('./dist/') {
                                             stash name: "dist-conda-${PYTHON_VERSION}"
                                         }
@@ -121,7 +122,8 @@ spec:
                             }
                         }
                         steps {
-                            podTemplate(containers: [
+                            podTemplate(
+                                containers: [
                                 containerTemplate(
                                     name: 'python',
                                     image: "python:${PYTHON_VERSION}",
@@ -130,15 +132,59 @@ spec:
                                 )
                             ]) {
                                 node(POD_LABEL) {
-                                    git url: 'https://github.com/wvxvw/cleanX.git', branch: 'main'
                                     container('python') {
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
                                         sh "python${PYTHON_VERSION} -m venv .venv"
                                         sh './.venv/bin/python -m pip install wheel'
-                                        unstash "dist-pypi-${PYTHON_VERSION}"
+                                        unstash "setup-pypi-${PYTHON_VERSION}"
+                                        dir('./dist') {
+                                            unstash "dist-pypi-${PYTHON_VERSION}"
+                                        }
+                                        sh './.venv/bin/python -m pip install ./dist/*.whl'
                                         sh './.venv/bin/python ./setup.py lint'
                                         sh './.venv/bin/python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    stage('Test on conda') {
+                        when {
+                            expression {
+                                return "${PYTHON_DISTRIBUTION}" == 'anaconda'
+                            }
+                        }
+                        steps {
+                            podTemplate(yaml: """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: conda-${PYTHON_VERSION}
+spec:
+  securityContext:
+    runAsUser: 0
+    runAsGroup: 0
+  containers:
+  - name: python
+    image: continuumio/conda-ci-linux-64-python${PYTHON_VERSION}
+    command:
+    - /bin/bash
+    args:
+    - "-c"
+    - "sleep 99d"
+    workingDir: /home/jenkins/agent
+""") {
+                                node(POD_LABEL) {
+                                    container('python') {
+                                        unstash "setup-conda-${PYTHON_VERSION}"
+                                        dir('./dist') {
+                                            unstash "dist-conda-${PYTHON_VERSION}"
+                                        }
+                                        sh 'conda install ./dist/*.bz2'
+                                        sh 'conda install pytest pycodestyle'
+                                        sh 'python ./setup.py lint'
+                                        sh 'python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
                                     }
                                 }
                             }
