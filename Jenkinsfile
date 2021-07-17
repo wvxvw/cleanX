@@ -185,6 +185,7 @@ spec:
                                         dir('./dist') {
                                             unstash "dist-conda-${PYTHON_VERSION}"
                                         }
+                                        sh 'ls -alh ./dist/'
                                         sh 'conda install ./dist/*.bz2'
                                         sh 'conda install pytest pycodestyle'
                                         sh 'python ./setup.py lint'
