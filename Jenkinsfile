@@ -62,8 +62,6 @@ pipeline {
                                         sh './.venv/bin/python ./setup.py install'
                                         sh './.venv/bin/python ./setup.py bdist_egg'
                                         sh './.venv/bin/python ./setup.py bdist_wheel'
-                                        stash name: "setup-pypi-${PYTHON_VERSION}",
-                                            includes: "setup.py"
                                         dir('dist') {
                                             stash name: "dist-pypi-${PYTHON_VERSION}"
                                         }
@@ -109,8 +107,6 @@ spec:
                                         sh '.venv/bin/python setup.py genconda'
                                         sh 'conda install conda-build'
                                         sh 'conda build -c conda-forge --output-folder ./dist ./conda-pkg/'
-                                        stash name: "setup-conda-${PYTHON_VERSION}",
-                                            includes: "setup.py"
                                         dir('./dist/') {
                                             stash name: "dist-conda-${PYTHON_VERSION}"
                                         }
@@ -138,11 +134,12 @@ spec:
                             ]) {
                                 node(POD_LABEL) {
                                     container('python') {
+                                        git url: 'https://github.com/wvxvw/cleanX.git',
+                                            branch: "${branch}"
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
                                         sh "python${PYTHON_VERSION} -m venv .venv"
                                         sh './.venv/bin/python -m pip install wheel'
-                                        unstash "setup-pypi-${PYTHON_VERSION}"
                                         dir('./dist') {
                                             unstash "dist-pypi-${PYTHON_VERSION}"
                                         }
@@ -183,7 +180,8 @@ spec:
 """) {
                                 node(POD_LABEL) {
                                     container('python') {
-                                        unstash "setup-conda-${PYTHON_VERSION}"
+                                        git url: 'https://github.com/wvxvw/cleanX.git',
+                                            branch: "${branch}"
                                         dir('./dist') {
                                             unstash "dist-conda-${PYTHON_VERSION}"
                                         }
