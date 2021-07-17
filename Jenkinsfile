@@ -186,8 +186,7 @@ spec:
                                         dir('./dist') {
                                             unstash "dist-conda-${PYTHON_VERSION}"
                                         }
-                                        sh 'ls -alh ./dist/'
-                                        sh 'conda install ./dist/*.bz2'
+                                        sh 'conda install $(find ./dist/ -name cleanx*.bz2)'
                                         sh 'conda install pytest pycodestyle'
                                         sh 'python ./setup.py lint'
                                         sh 'python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
