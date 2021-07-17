@@ -7,6 +7,10 @@ def libraries = [
     'python3-opencv'
 ].join(' ')
 
+def branch_full = scm.branches[0].name
+
+def branch = branch_full[11..-1]
+
 pipeline {
     agent none
     options {
@@ -47,8 +51,9 @@ pipeline {
                                 )
                             ]) {
                                 node(POD_LABEL) {
+                                    sh "echo ${branch}, ${env.GIT_BRANCH}, ${GIT_BRANCH}"
                                     git url: 'https://github.com/wvxvw/cleanX.git',
-                                        branch: "${GIT_BRANCH}"
+                                        branch: "${branch}"
                                     container('python') {
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
@@ -96,7 +101,7 @@ spec:
 """) {
                                 node(POD_LABEL) {
                                     git url: 'https://github.com/wvxvw/cleanX.git',
-                                        branch: "${GIT_BRANCH}"
+                                        branch: "${branch}"
                                     container('python') {
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
@@ -144,6 +149,7 @@ spec:
                                         sh './.venv/bin/python -m pip install ./dist/*.whl'
                                         sh './.venv/bin/python ./setup.py lint'
                                         sh './.venv/bin/python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
+                                        junit 'junit-report.xml'
                                     }
                                 }
                             }
@@ -185,6 +191,7 @@ spec:
                                         sh 'conda install pytest pycodestyle'
                                         sh 'python ./setup.py lint'
                                         sh 'python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
+                                        junit 'junit-report.xml'
                                     }
                                 }
                             }
