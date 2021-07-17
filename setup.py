@@ -39,8 +39,12 @@ project_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path = [x for x in sys.path if not x == project_dir]
 
 
-with open('README.md', 'r') as f:
-    readme = f.read()
+try:
+    with open('README.md', 'r') as f:
+        readme = f.read()
+except FileNotFoundError:
+    print('Couldn\'t find the readme, it\'s OK if this is a CI test run')
+    readme = ''
 
 name = 'cleanX'
 try:
