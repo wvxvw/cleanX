@@ -124,6 +124,7 @@ spec:
                         }
                         steps {
                             podTemplate(
+                                podRetention: onFailure(),
                                 containers: [
                                 containerTemplate(
                                     name: 'python',
