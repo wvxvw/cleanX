@@ -189,7 +189,7 @@ spec:
                                             unstash "dist-conda-${PYTHON_VERSION}"
                                         }
                                         sh 'conda install $(find ./dist/ -name cleanx*.bz2)'
-                                        sh 'conda install -c anaconda pytest pycodestyle'
+                                        sh 'conda install -c conda-forge pytest pycodestyle'
                                         sh 'python ./setup.py lint'
                                         sh 'python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
                                         junit 'junit-report.xml'
