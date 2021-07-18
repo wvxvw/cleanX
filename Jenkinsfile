@@ -105,8 +105,9 @@ spec:
                                         sh "apt-get install -y ${libraries}"
                                         sh 'python -m venv .venv'
                                         sh '.venv/bin/python setup.py genconda'
+                                        sh 'conda config --add channels conda-forge'
                                         sh 'conda install conda-build'
-                                        sh 'conda build -c conda-forge --output-folder ./dist ./conda-pkg/'
+                                        sh 'conda build --output-folder ./dist ./conda-pkg/'
                                         dir('./dist/') {
                                             stash name: "dist-conda-${PYTHON_VERSION}"
                                         }
@@ -188,8 +189,9 @@ spec:
                                         dir('./dist') {
                                             unstash "dist-conda-${PYTHON_VERSION}"
                                         }
+                                        sh 'conda config --add channels conda-forge'
                                         sh 'conda install $(find ./dist/ -name cleanx*.bz2)'
-                                        sh 'conda install -c conda-forge pytest pycodestyle'
+                                        sh 'conda install pytest pycodestyle'
                                         sh 'python ./setup.py lint'
                                         sh 'python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
                                         junit 'junit-report.xml'
