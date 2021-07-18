@@ -147,7 +147,6 @@ spec:
                                             unstash "dist-pypi-${PYTHON_VERSION}"
                                         }
                                         sh './.venv/bin/python -m pip install ./dist/*.whl'
-                                        sh 'sleep 60m'
                                         sh './.venv/bin/python ./setup.py lint'
                                         sh './.venv/bin/python ./setup.py test --pytest-args "--junit-xml junit-report.xml"'
                                         junit 'junit-report.xml'
