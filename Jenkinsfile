@@ -153,7 +153,8 @@ spec:
                                                \"--junit-xml \\
                                                pypi-${PYTHON_VERSION}junit-report.xml\"
                                            """
-                                        junit 'junit-report.xml', skipPublishingChecks: true
+                                        junit testResults: 'junit-report.xml',
+                                            skipPublishingChecks: true
                                     }
                                 }
                             }
@@ -201,7 +202,8 @@ spec:
                                                \"--junit-xml \\
                                                conda-${PYTHON_VERSION}junit-report.xml\"
                                            """
-                                        junit 'junit-report.xml', skipPublishingChecks: true
+                                        junit testResults: 'junit-report.xml',
+                                            skipPublishingChecks: true
                                     }
                                 }
                             }
