@@ -38,14 +38,29 @@ except (FileNotFoundError, subprocess.CalledProcessError):
 
 from tesserocr import PyTessBaseAPI
 
-import glob
-import filecmp
-import math
-import os
-import re
+try:
+    def __fix_tesserocr_locale():
+        output = subprocess.check_output(
+            ['ldconfig', '-v'],
+            stderr=subprocess.DEVNULL,
+        )
+        for line in output.decode().split('\n'):
+            if line.lstrip().startswith('libtesseract'):
+                alias, soname = line.strip().split(' -> ')
+                _, _, maj, min, patch = soname.split('.')
+                maj, min, patch = int(maj), int(min), int(patch)
+                if (maj, min, patch) < (4, 0, 1):
+                    import locale
+                    locale.setlocale(locale.LC_ALL, 'C')
+                    logging.warning(
+                        'Setting locale to C, otherwise tesseract segfaults',
+                    )
+    __fix_tesserocr_locale()
+    del __fix_tesserocr_locale
+except FileNotFoundError:
+    logging.warning('Don\'t know how to find Tesseract library version')
 
-from filecmp import cmp
-from pathlib import Path
+from tesserocr import PyTessBaseAPI
 
 
 class Cv2Error(RuntimeError):
