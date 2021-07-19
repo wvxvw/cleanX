@@ -102,8 +102,8 @@ spec:
                                         branch: "${branch}"
                                     container('python') {
                                         sh 'apt-get update -y'
-                                        sh "apt-get install -y ${libraries}"
-                                        sh 'apt-get install libgl1-mesa-dri'
+                                        sh """apt-get install -y ${libraries} \\
+                                           libgl1-mesa-dri libgl1-mesa-glx"""
                                         sh 'python -m venv .venv'
                                         sh '.venv/bin/python setup.py genconda'
                                         sh 'conda config --add channels conda-forge'
@@ -141,7 +141,8 @@ spec:
                                         git url: 'https://github.com/wvxvw/cleanX.git',
                                             branch: "${branch}"
                                         sh 'apt-get update -y'
-                                        sh "apt-get install -y ${libraries}"
+                                        sh """apt-get install -y ${libraries} \\
+                                           libgl1-mesa-dri libgl1-mesa-glx"""
                                         sh "python${PYTHON_VERSION} -m venv .venv"
                                         sh './.venv/bin/python -m pip install wheel'
                                         dir('./dist') {
@@ -194,6 +195,7 @@ spec:
                                         dir('./dist') {
                                             unstash "dist-conda-${PYTHON_VERSION}"
                                         }
+                                        sh 'apt-get install -y libgl1-mesa-dri libgl1-mesa-glx'
                                         sh 'conda config --add channels conda-forge'
                                         sh 'conda install $(find ./dist/ -name cleanx*.bz2)'
                                         sh 'conda install pytest pycodestyle'
