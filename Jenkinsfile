@@ -149,7 +149,7 @@ spec:
                                         }
                                         sh './.venv/bin/python -m pip install ./dist/*.whl'
                                         sh './.venv/bin/python ./setup.py lint'
-                                        sh """python \\
+                                        sh """./.venv/bin/python \\
                                               ./setup.py test --pytest-args \\
                                                \"--junit-xml \\
                                                pypi-${PYTHON_VERSION}junit-report.xml\"
