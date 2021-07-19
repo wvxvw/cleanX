@@ -4,7 +4,6 @@ def libraries = [
     'libleptonica-dev',
     'tesseract-ocr-all',
     'libtesseract-dev',
-    'python3-opencv'
 ].join(' ')
 
 def branch_full = scm.branches[0].name
@@ -103,6 +102,7 @@ spec:
                                     container('python') {
                                         sh 'apt-get update -y'
                                         sh "apt-get install -y ${libraries}"
+                                        sh 'apt-get install libgl1-mesa-dri'
                                         sh 'python -m venv .venv'
                                         sh '.venv/bin/python setup.py genconda'
                                         sh 'conda config --add channels conda-forge'
