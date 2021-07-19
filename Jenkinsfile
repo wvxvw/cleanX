@@ -155,7 +155,7 @@ spec:
                                                \"--junit-xml \\
                                                pypi-${PYTHON_VERSION}junit-report.xml\"
                                            """
-                                        junit testResults: 'pypi-${PYTHON_VERSION}junit-report.xml',
+                                        junit testResults: "pypi-${PYTHON_VERSION}junit-report.xml",
                                             skipPublishingChecks: true
                                     }
                                 }
