@@ -29,7 +29,8 @@ pipeline {
                     }
                     axis {
                         name 'PYTHON_DISTRIBUTION'
-                        values 'pypi', 'anaconda'
+                        // values 'pypi', 'anaconda'
+                        values 'pypi'
                     }
                 }
 
