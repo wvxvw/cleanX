@@ -29,8 +29,7 @@ pipeline {
                     }
                     axis {
                         name 'PYTHON_DISTRIBUTION'
-                        // values 'pypi', 'anaconda'
-                        values 'pypi'
+                        values 'pypi', 'anaconda'
                     }
                 }
 
@@ -187,6 +186,13 @@ spec:
     - "-c"
     - "sleep 99d"
     workingDir: /home/jenkins/agent
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "500m"
+      limits:
+        memory: "256Mi"
+        cpu: "1"
 """) {
                                 node(POD_LABEL) {
                                     container('python') {
@@ -205,7 +211,7 @@ spec:
                                                \"--junit-xml \\
                                                conda-${PYTHON_VERSION}junit-report.xml\"
                                            """
-                                        junit testResults: 'conda-${PYTHON_VERSION}junit-report.xml',
+                                        junit testResults: "conda-${PYTHON_VERSION}junit-report.xml",
                                             skipPublishingChecks: true
                                     }
                                 }
