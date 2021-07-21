@@ -188,11 +188,11 @@ spec:
     workingDir: /home/jenkins/agent
     resources:
       requests:
-        memory: "256Mi"
-        cpu: "1"
+        memory: "2Gi"
+        cpu: "2"
       limits:
-        memory: "256Mi"
-        cpu: "1"
+        memory: "2Gi"
+        cpu: "2"
 """) {
                                 node(POD_LABEL) {
                                     container('python') {
