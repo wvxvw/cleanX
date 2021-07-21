@@ -17,7 +17,7 @@ import pandas as pd
 try:
     def __fix_tesserocr_locale():
         output = subprocess.check_output(
-            ['ldconfig', '-v'],
+            ['/sbin/ldconfig', '-v'],
             stderr=subprocess.DEVNULL,
         )
         for line in output.decode().split('\n'):
@@ -57,7 +57,7 @@ try:
                     )
     __fix_tesserocr_locale()
     del __fix_tesserocr_locale
-except FileNotFoundError:
+except (FileNotFoundError, subprocess.CalledProcessError):
     logging.warning('Don\'t know how to find Tesseract library version')
 
 from tesserocr import PyTessBaseAPI
