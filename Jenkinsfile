@@ -188,8 +188,8 @@ spec:
     workingDir: /home/jenkins/agent
     resources:
       requests:
-        memory: "128Mi"
-        cpu: "500m"
+        memory: "256Mi"
+        cpu: "1"
       limits:
         memory: "256Mi"
         cpu: "1"
