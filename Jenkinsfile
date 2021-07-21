@@ -201,6 +201,7 @@ spec:
                                         dir('./dist') {
                                             unstash "dist-conda-${PYTHON_VERSION}"
                                         }
+                                        sh 'apt-get update -y'
                                         sh 'apt-get install -y libgl1-mesa-dri libgl1-mesa-glx'
                                         sh 'conda config --add channels conda-forge'
                                         sh 'conda install $(find ./dist/ -name cleanx*.bz2)'
