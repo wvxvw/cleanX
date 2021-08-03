@@ -4,13 +4,13 @@ cleanX.image\_work package
 Submodules
 ----------
 
-cleanX.image\_work.image\_work module
--------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: cleanX.image_work.image_work
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   cleanX.image_work.image_functions
+   cleanX.image_work.journaling_pipeline
+   cleanX.image_work.pipeline
+   cleanX.image_work.steps
 
 Module contents
 ---------------
