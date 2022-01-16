@@ -286,17 +286,24 @@ class AnacondaUpload(Command):
     def run(self):
         env = dict(os.environ)
         env['ANACONDA_API_TOKEN'] = self.token
-        proc = subprocess.Popen(
-            [
-                'anaconda',
-                'upload',
-                '--force',
-                '--label', 'main',
-                glob(self.package)[0],
-            ],
-            env=env,
-            stderr=subprocess.PIPE,
-        )
+        upload = glob(self.package)[0]
+        sys.stderr.write('Uploading: {}'.format(upload))
+        try:
+            proc = subprocess.Popen(
+                [
+                    'anaconda',
+                    'upload',
+                    '--force',
+                    '--label', 'main',
+                    upload,
+                ],
+                env=env,
+                stderr=subprocess.PIPE,
+            )
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            raise
         _, err = proc.communicate()
         if proc.returncode:
             sys.stderr.write('Upload to Anaconda failed\n')

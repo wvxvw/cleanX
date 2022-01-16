@@ -1,86 +1,6 @@
 name: Sanity
 on: [push]
 jobs:
-  Sanity:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
-        click-package: ["", click]
-        dicom-package: ["", pydicom, SimpleITK]
-    steps:
-      - uses: actions/checkout@v2
-      - run: >-
-          sudo apt-get install -y
-          libleptonica-dev
-          tesseract-ocr-all
-          libtesseract-dev
-      - run: python3 -m venv .venv
-      - run: >-
-          .venv/bin/python
-          -m pip install
-          wheel
-          ${{ matrix.click-package }}
-          ${{ matrix.dicom-package }}
-      - run: .venv/bin/python setup.py install
-      - run: >-
-          .venv/bin/python
-          setup.py test
-          --pytest-args "--junit-xml
-          report-pypi-${{ matrix.python-version }}-${{ matrix.click-pacage }}-${{ matrix.dicom-package }}.xml"
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: pypi-junit-${{ matrix.python-version }}
-          path: report-*.xml
-
-  Lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: >-
-          sudo apt-get install -y
-          libleptonica-dev
-          tesseract-ocr-all
-          libtesseract-dev
-      - run: python3 -m venv .venv
-      - run: .venv/bin/python -m pip install wheel
-      - run: .venv/bin/python setup.py lint
-
-  Sphinx:
-    runs-on: ubuntu-latest
-    if: |
-      github.ref == 'refs/heads/main' ||
-      github.ref == 'refs/heads/wvxvw/documentation-fixes'
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - run: sudo apt-get update -y
-      - run: >-
-          sudo apt-get install -y
-          libleptonica-dev
-          tesseract-ocr-all
-          libtesseract-dev
-          dvipng
-      - run: python3 -m venv .venv
-      - run: >-
-          .venv/bin/python -m pip install
-          wheel
-          sphinx-click
-          pydicom
-          SimpleITK
-          click
-      - run: .venv/bin/python setup.py install
-      - run: .venv/bin/python setup.py apidoc
-      - run: .venv/bin/python setup.py build_sphinx
-      - name: Publish Docs to Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.1
-        with:
-          branch: gh-pages
-          folder: build/sphinx/html
-
   CondaBuild:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -96,57 +16,20 @@ jobs:
         with:
           conda-channels: conda-forge
           python-version: ${{ matrix.python-version }}
-      - run: conda create --name cleanx-build python=${{ matrix.python-version }}
-      - run: conda run -n cleanx-build python setup.py bdist_egg
-      - run: conda run -n cleanx-build python setup.py genconda
-        # conda-build installation and the build cannot be in an
-        # environment
-      - run: conda install -yq conda-build $(conda --version | tr ' ' '=')
-      - run: conda build -c conda-forge ./conda-pkg/
-      - run: conda install -yq -n cleanx-build --use-local cleanx
-      - run: conda install -yq -n cleanx-build pytest pycodestyle
-      - run: conda info
-      - run: conda list -n cleanx-build
+      - run: >
+          conda install
+          conda-build
+          anaconda-client
+          conda-verify
+          anaconda
+          $(conda --version | tr ' ' '=')
+          python=${{ matrix.python-version }}
+      # - run: anaconda --help
       - run: >-
-          conda run -n cleanx-build
-          python
-          ./setup.py test
-          --pytest-args
-          "--junit-xml report-conda-${{ matrix.os }}-${{ matrix.python-version }}.xml"
-      - run: conda install -yq -c conda-forge -n cleanx-build sphinx pycodestyle pytest
-      - run: conda run -n cleanx-build python setup.py anaconda_gen_env
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: conda-junit-${{ matrix.python-version }}-${{ matrix.os }}
-          path: report-*.xml
-      - uses: actions/upload-artifact@v2
-        with:
-          name: cleanx-env-${{ matrix.python-version }}-${{ matrix.os }}
-          path: cleanx-env-*.yml
-
-  PublishJUnit:
-    runs-on: ubuntu-latest
-    needs: [Sanity, CondaBuild]
-    steps:
-      - uses: actions/download-artifact@v2
-      - uses: EnricoMi/publish-unit-test-result-action@v1
-        with:
-          files: "*/report-*.xml"
-
-  Paper:
-    runs-on: ubuntu-latest
-    name: Paper Draft
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build draft PDF
-        uses: openjournals/openjournals-draft-action@master
-        with:
-          journal: joss
-          paper-path: paper/paper.md
-      - name: Upload
-        uses: actions/upload-artifact@v1
-        with:
-          name: paper
-          path: paper/paper.pdf
+          python setup.py anaconda_upload --token=xxx --package=./test/*.csv
+      - run: >-
+          for p in $(echo "$PATH" | tr ':' '\n') ; do
+            if [ -d "$p" ] ; then
+              find "$p" -type f -name 'anaconda*'
+            fi
+          done
