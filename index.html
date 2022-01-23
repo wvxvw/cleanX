@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>cleanX documentation &#8212; cleanX 0.0.4 documentation</title>
+    <title>cleanX documentation &#8212; cleanX 0.1.9 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="cleanX" href="modules.html" /> 
+    <link rel="next" title="cleanX package" href="cleanX.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,9 +27,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="modules.html" title="cleanX"
+          <a href="cleanX.html" title="cleanX package"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">cleanX 0.0.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">cleanX 0.1.9 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">cleanX documentation</a></li> 
       </ul>
     </div>  
@@ -43,12 +43,16 @@
 <h1>cleanX documentation<a class="headerlink" href="#cleanx-documentation" title="Permalink to this headline">¶</a></h1>
 <p>Here is some general information about the cleanX package. We are working on
 documentation for programmers and medical professionals with some coding
-experience.
-The package helps with data cleaning for two-dimensional medical images. The
-idea is that given DICOMs or files of images, you can use the functions as APIs
-to build the basis for machine learning or certain other types of algorithms.
+experience. For now documentation for professionals with less coding experience
+can be found on our wiki. The documentation on this website is programmers
+oriented.
+The cleanX package helps with data cleaning for two-dimensional medical images.
+The idea is that given DICOMs or files of images, you can use the functions as
+APIs to build the basis for machine learning or certain other types of
+algorithms.
 You can use the package code to clean out data that would lower the quality of
-your algorithm, and use the code to add augmented images.</p>
+your algorithm if the “uncleaned” data was included, and use also the code to
+add augmented images.</p>
 <section id="the-api-documentation-guide">
 <h2>The API Documentation / Guide<a class="headerlink" href="#the-api-documentation-guide" title="Permalink to this headline">¶</a></h2>
 <p>If you are looking for information on a specific function, class, or method,
@@ -56,12 +60,25 @@ this part of the documentation is for you.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">cleanX</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cleanX.html">cleanX package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cleanX.html">cleanX package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cleanX.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cleanX.html#module-cleanX">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </div>
+</section>
+<section id="command-line-interface-documentation">
+<h2>Command-Line Interface Documentation<a class="headerlink" href="#command-line-interface-documentation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="cli.html"><span class="doc">CLI</span></a></p>
+</section>
+<section id="developer-s-guide">
+<h2>Developer’s Guide<a class="headerlink" href="#developer-s-guide" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="developers.html"><span class="doc">Developer’s Guide</span></a></p>
+</section>
+<section id="medical-professionals-documentation">
+<h2>Medical Professionals Documentation<a class="headerlink" href="#medical-professionals-documentation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="medical-professionals.html"><span class="doc">Medical Professionals Documentation</span></a></p>
 </section>
 </section>
 <section id="indices-and-tables">
@@ -80,18 +97,25 @@ this part of the documentation is for you.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">cleanX documentation</a><ul>
 <li><a class="reference internal" href="#the-api-documentation-guide">The API Documentation / Guide</a></li>
+<li><a class="reference internal" href="#command-line-interface-documentation">Command-Line Interface Documentation</a></li>
+<li><a class="reference internal" href="#developer-s-guide">Developer’s Guide</a></li>
+<li><a class="reference internal" href="#medical-professionals-documentation">Medical Professionals Documentation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
-  <h4>Next topic</h4>
-  <p class="topless"><a href="modules.html"
-                        title="next chapter">cleanX</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="cleanX.html"
+                          title="next chapter">cleanX package</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -123,15 +147,15 @@ this part of the documentation is for you.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="modules.html" title="cleanX"
+          <a href="cleanX.html" title="cleanX package"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">cleanX 0.0.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">cleanX 0.1.9 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">cleanX documentation</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, doctormakeda@gmail.com.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>
