@@ -126,9 +126,9 @@ jobs:
           --no-anaconda-upload
           -c conda-forge
           ./conda-pkg/
-      # At worst, this ma take hours...
+      # At worst, this may take hours...
       - run: >-
-          conda install
+          CONDA_INSTRUMENTATION_ENABLED=1 conda install -vv
           -yq
           -n cleanx-build
           --strict-channel-priority
@@ -140,7 +140,7 @@ jobs:
           python=${{ matrix.python-version }}
           pytest
           pycodestyle
-          sphinx
+          sphinx | tee conda_debug_output.txt
       - run: >-
           conda run -n cleanx-build
           python
@@ -153,6 +153,11 @@ jobs:
         with:
           name: conda-junit-${{ matrix.python-version }}-${{ matrix.os }}
           path: report-*.xml
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: conda-logs-${{ matrix.python-version }}-${{ matrix.os }}
+          path: conda_debug_output.txt
       - uses: actions/upload-artifact@v2
         with:
           name: cleanx-env-${{ matrix.python-version }}-${{ matrix.os }}
